@@ -1,0 +1,62 @@
+#include <reg51.h>
+
+#define SCANP P2
+#define SEGP  P0
+
+char code TAB[10] = {
+    0xC0, 0xF9, 0xA4, 0xB0, 0x99,
+    0x92, 0x83, 0xF8, 0x80, 0x98
+};
+
+char code disp[] = {
+    2, 0, 1, 6, 0, 1, 2, 3
+};
+
+void delay1ms(int x);
+void scanner4(char x, char y);
+
+void main()
+{
+    char i, j;
+
+    while (1)
+    {
+        for (i = 0; i < 2; i++)
+        {
+            for (j = 0; j < 3; j++)
+            {
+                scanner4(120, 4 * i);
+            }
+
+            delay1ms(480);
+        }
+    }
+}
+
+void delay1ms(int x)
+{
+    int i, j;
+
+    for (i = 0; i < x; i++)
+    {
+        for (j = 0; j < 120; j++);
+    }
+}
+
+void scanner4(char x, char y)
+{
+    char i, j;
+
+    for (i = 0; i < x; i++)
+    {
+        for (j = 0; j < 4; j++)
+        {
+            SCANP = 0xFF;
+            SEGP = TAB[disp[3 - j + y]];
+            SCANP = ~(1 << j);
+            delay1ms(1);
+        }
+    }
+
+    SEGP = 0xFF;
+}

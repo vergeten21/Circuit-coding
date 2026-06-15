@@ -1,0 +1,39 @@
+#include <reg51.h>
+
+sbit buzzer = P3^7;
+
+void delay500us(int x);
+void pulse_BZ(int count, int TH, int TL);
+
+void main(void)
+{
+    while (1)
+    {
+        pulse_BZ(100, 1, 1);
+        delay500us(1000);
+    }
+}
+
+void delay500us(int x)
+{
+    int i, j;
+
+    for (i = 0; i < x; i++)
+    {
+        for (j = 0; j < 60; j++);
+    }
+}
+
+void pulse_BZ(int count, int TH, int TL)
+{
+    int i;
+
+    for (i = 0; i < count; i++)
+    {
+        buzzer = 0;
+        delay500us(TL);
+
+        buzzer = 1;
+        delay500us(TH);
+    }
+}
